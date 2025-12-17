@@ -451,12 +451,20 @@
             position: relative;
             max-width: 95%;
             max-height: 95%;
+            overflow: hidden;
+            cursor: grab;
+        }
+        
+        .viewer-content.dragging {
+            cursor: grabbing;
         }
         
         .viewer-content img {
             max-width: 100%;
             max-height: 90vh;
             object-fit: contain;
+            transition: transform 0.1s ease;
+            user-select: none;
         }
         
         .viewer-close {
@@ -509,6 +517,42 @@
             color: white;
             padding: 0.5rem 1rem;
             border-radius: 20px;
+        }
+        
+        .zoom-controls {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            display: flex;
+            gap: 10px;
+            background: rgba(0,0,0,0.7);
+            padding: 10px;
+            border-radius: 10px;
+        }
+        
+        .zoom-btn {
+            background: var(--accent-red);
+            color: white;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 5px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .zoom-btn:hover {
+            background: white;
+            color: var(--accent-red);
+        }
+        
+        .zoom-level {
+            color: white;
+            display: flex;
+            align-items: center;
+            padding: 0 10px;
+            font-size: 0.9rem;
         }
         
         /* Contact Section */
@@ -780,9 +824,8 @@
                 <div class="contact-info">
                     <div class="contact-item">
                         <h4>Email</h4>
-                        <p><a href="mailto:B032310495@student.utem.edu.my" 
-   style="color: white; text-decoration: none;">
-   B032310495@student.utem.edu.my
+                        <p><a href="/cdn-cgi/l/email-protection#a6e4969594959796929f93e6d5d2d3c2c3c8d288d3d2c3cb88c3c2d388cbdf" style="color: white; text-decoration: none;">
+   <span class="__cf_email__" data-cfemail="91d3a1a2a3a2a0a1a5a8a4d1e2e5e4f5f4ffe5bfe4e5f4fcbff4f5e4bffce8">[email&#160;protected]</span>
 </a></p>
                     </div>
                     <div class="contact-item">
@@ -837,15 +880,15 @@
                 <h3>Project Gallery</h3>
                 <div class="gallery-grid">
                     <div class="gallery-item" onclick="openImageViewer('project1', 0)">
-                        <img src="images/bus-ticketing/view-schedule.png" alt="View Schedule">
+                        <img src="images/bus-ticketing/view-schedule.jpg" alt="View Schedule" onerror="this.src='https://via.placeholder.com/400x300/000000/e63946?text=View+Schedule'">
                         <div class="gallery-item-caption">Bus Schedule Viewer</div>
                     </div>
                     <div class="gallery-item" onclick="openImageViewer('project1', 1)">
-                        <img src="images/bus-ticketing/booking-ticket.png" alt="Booking Ticket">
+                        <img src="images/bus-ticketing/booking-ticket.jpg" alt="Booking Ticket" onerror="this.src='https://via.placeholder.com/400x300/000000/e63946?text=Booking+Ticket'">
                         <div class="gallery-item-caption">Ticket Booking & Seat Selection</div>
                     </div>
                     <div class="gallery-item" onclick="openImageViewer('project1', 2)">
-                        <img src="images/bus-ticketing/report.png" alt="Report">
+                        <img src="images/bus-ticketing/report.jpg" alt="Report" onerror="this.src='https://via.placeholder.com/400x300/000000/e63946?text=Sales+Report'">
                         <div class="gallery-item-caption">Sales Reports & Analytics</div>
                     </div>
                 </div>
@@ -882,11 +925,11 @@
                 <h3>Project Gallery</h3>
                 <div class="gallery-grid">
                     <div class="gallery-item" onclick="openImageViewer('project2', 0)">
-                        <img src="images/mushroom-identifier/main-interface.jpg" alt="Main Interface">
+                        <img src="images/mushroom-identifier/main-interface.jpg" alt="Main Interface" onerror="this.src='https://via.placeholder.com/400x300/000000/e63946?text=Main+Interface'">
                         <div class="gallery-item-caption">Main Interface with Mushroom Theme</div>
                     </div>
                     <div class="gallery-item" onclick="openImageViewer('project2', 1)">
-                        <img src="images/mushroom-identifier/species-identify.jpg" alt="Species Identification">
+                        <img src="images/mushroom-identifier/species-identify.jpg" alt="Species Identification" onerror="this.src='https://via.placeholder.com/400x300/000000/e63946?text=Species+Identification'">
                         <div class="gallery-item-caption">Species Identification Results</div>
                     </div>
                 </div>
@@ -899,15 +942,21 @@
         <button class="viewer-close" onclick="closeImageViewer()">&times;</button>
         <button class="viewer-nav viewer-prev" onclick="changeImage(-1)">❮</button>
         <button class="viewer-nav viewer-next" onclick="changeImage(1)">❯</button>
-        <div class="viewer-content">
+        <div class="viewer-content" id="viewerContent">
             <img id="viewerImage" src="" alt="Full size image">
         </div>
         <div class="viewer-counter">
             <span id="imageCounter">1 / 1</span>
         </div>
+        <div class="zoom-controls">
+            <button class="zoom-btn" onclick="zoomOut()" title="Zoom Out">−</button>
+            <div class="zoom-level" id="zoomLevel">100%</div>
+            <button class="zoom-btn" onclick="zoomIn()" title="Zoom In">+</button>
+            <button class="zoom-btn" onclick="resetZoom()" title="Reset Zoom">⟲</button>
+        </div>
     </div>
 
-    <script>
+    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
         // Modal Functions
         function openModal(projectId) {
             document.getElementById(projectId + 'Modal').classList.add('active');
@@ -919,9 +968,17 @@
             document.body.style.overflow = 'auto';
         }
 
+
         // Image Viewer Functions
         let currentProject = '';
         let currentImageIndex = 0;
+        let currentZoom = 1;
+        let isDragging = false;
+        let startX = 0;
+        let startY = 0;
+        let translateX = 0;
+        let translateY = 0;
+        
         let projectImages = {
             'project1': [
                 { src: 'images/bus-ticketing/view-schedule.png', fallback: 'https://placehold.co/1200x900/000000/e63946?text=View+Schedule' },
@@ -937,6 +994,7 @@
         function openImageViewer(projectId, imageIndex) {
             currentProject = projectId;
             currentImageIndex = imageIndex;
+            resetZoom();
             showImage();
             document.getElementById('imageViewer').classList.add('active');
             document.body.style.overflow = 'hidden';
@@ -945,11 +1003,13 @@
         function closeImageViewer() {
             document.getElementById('imageViewer').classList.remove('active');
             document.body.style.overflow = 'auto';
+            resetZoom();
         }
 
         function changeImage(direction) {
             const images = projectImages[currentProject];
             currentImageIndex = (currentImageIndex + direction + images.length) % images.length;
+            resetZoom();
             showImage();
         }
 
@@ -958,7 +1018,6 @@
             const image = images[currentImageIndex];
             const viewerImage = document.getElementById('viewerImage');
             
-            // Try to load actual image, fallback to placeholder if fails
             viewerImage.onerror = function() {
                 this.src = image.fallback;
             };
@@ -967,6 +1026,73 @@
             document.getElementById('imageCounter').textContent = 
                 `${currentImageIndex + 1} / ${images.length}`;
         }
+        
+        // Zoom Functions
+        function zoomIn() {
+            currentZoom = Math.min(currentZoom + 0.25, 4);
+            updateZoom();
+        }
+        
+        function zoomOut() {
+            currentZoom = Math.max(currentZoom - 0.25, 0.5);
+            updateZoom();
+        }
+        
+        function resetZoom() {
+            currentZoom = 1;
+            translateX = 0;
+            translateY = 0;
+            updateZoom();
+        }
+        
+        function updateZoom() {
+            const viewerImage = document.getElementById('viewerImage');
+            viewerImage.style.transform = `scale(${currentZoom}) translate(${translateX}px, ${translateY}px)`;
+            document.getElementById('zoomLevel').textContent = Math.round(currentZoom * 100) + '%';
+        }
+        
+        // Mouse wheel zoom
+        document.getElementById('viewerContent').addEventListener('wheel', function(e) {
+            if (document.getElementById('imageViewer').classList.contains('active')) {
+                e.preventDefault();
+                if (e.deltaY < 0) {
+                    zoomIn();
+                } else {
+                    zoomOut();
+                }
+            }
+        });
+        
+        // Pan functionality
+        const viewerContent = document.getElementById('viewerContent');
+        
+        viewerContent.addEventListener('mousedown', function(e) {
+            if (currentZoom > 1) {
+                isDragging = true;
+                startX = e.clientX - translateX;
+                startY = e.clientY - translateY;
+                viewerContent.classList.add('dragging');
+            }
+        });
+        
+        viewerContent.addEventListener('mousemove', function(e) {
+            if (isDragging && currentZoom > 1) {
+                e.preventDefault();
+                translateX = e.clientX - startX;
+                translateY = e.clientY - startY;
+                updateZoom();
+            }
+        });
+        
+        viewerContent.addEventListener('mouseup', function() {
+            isDragging = false;
+            viewerContent.classList.remove('dragging');
+        });
+        
+        viewerContent.addEventListener('mouseleave', function() {
+            isDragging = false;
+            viewerContent.classList.remove('dragging');
+        });
 
         // Close modals when clicking outside
         window.onclick = function(event) {
