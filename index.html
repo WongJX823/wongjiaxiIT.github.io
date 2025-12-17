@@ -449,9 +449,12 @@
         
         .viewer-content {
             position: relative;
-            max-width: 95%;
-            max-height: 95%;
-            overflow: hidden;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: visible;
             cursor: grab;
         }
         
@@ -460,11 +463,12 @@
         }
         
         .viewer-content img {
-            max-width: 100%;
+            max-width: 90vw;
             max-height: 90vh;
             object-fit: contain;
             transition: transform 0.1s ease;
             user-select: none;
+            transform-origin: center center;
         }
         
         .viewer-close {
@@ -1047,7 +1051,9 @@
         
         function updateZoom() {
             const viewerImage = document.getElementById('viewerImage');
-            viewerImage.style.transform = `scale(${currentZoom}) translate(${translateX}px, ${translateY}px)`;
+            const scaleAdjustedX = translateX / currentZoom;
+            const scaleAdjustedY = translateY / currentZoom;
+            viewerImage.style.transform = `scale(${currentZoom}) translate(${scaleAdjustedX}px, ${scaleAdjustedY}px)`;
             document.getElementById('zoomLevel').textContent = Math.round(currentZoom * 100) + '%';
         }
         
