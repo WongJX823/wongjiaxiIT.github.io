@@ -780,9 +780,9 @@
                 <div class="contact-info">
                     <div class="contact-item">
                         <h4>Email</h4>
-                        <p><a href="mailto:B032310495@student.utem.edu.my" 
+                        <p><a href="mailto:wongjiaxib021910@student.utem.edu.my" 
    style="color: white; text-decoration: none;">
-  B032310495@student.utem.edu.my
+   wongjiaxib021910@student.utem.edu.my
 </a></p>
                     </div>
                     <div class="contact-item">
@@ -907,7 +907,7 @@
         </div>
     </div>
 
-    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+    <script>
         // Modal Functions
         function openModal(projectId) {
             document.getElementById(projectId + 'Modal').classList.add('active');
@@ -982,3 +982,11 @@
         // Keyboard navigation
         document.addEventListener('keydown', function(e) {
             if (document.getElementById('imageViewer').classList.contains('active')) {
+                if (e.key === 'ArrowLeft') changeImage(-1);
+                if (e.key === 'ArrowRight') changeImage(1);
+                if (e.key === 'Escape') closeImageViewer();
+            }
+        });
+    </script>
+</body>
+</html>
