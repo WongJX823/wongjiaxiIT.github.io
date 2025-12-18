@@ -270,6 +270,138 @@
             color: var(--primary-black);
         }
         
+        /* Education Timeline */
+        .education-section {
+            margin-top: 4rem;
+        }
+        
+        .education-timeline {
+            position: relative;
+            padding: 2rem 0;
+        }
+        
+        .education-timeline::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: var(--accent-red);
+            transform: translateX(-50%);
+        }
+        
+        .education-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 3rem;
+            position: relative;
+        }
+        
+        .education-item:nth-child(odd) {
+            flex-direction: row;
+        }
+        
+        .education-item:nth-child(even) {
+            flex-direction: row-reverse;
+        }
+        
+        .education-logo {
+            flex: 0 0 200px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 2;
+        }
+        
+        .education-logo img {
+            width: 120px;
+            height: 120px;
+            object-fit: contain;
+            background: var(--white);
+            padding: 15px;
+            border-radius: 50%;
+            border: 4px solid var(--accent-red);
+            box-shadow: 0 5px 20px rgba(230, 57, 70, 0.3);
+            transition: transform 0.3s ease;
+        }
+        
+        .education-logo img:hover {
+            transform: scale(1.1) rotate(5deg);
+        }
+        
+        .education-content {
+            flex: 1;
+            background: var(--white);
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            position: relative;
+            margin: 0 2rem;
+            border-left: 4px solid var(--accent-red);
+            transition: transform 0.3s ease;
+        }
+        
+        .education-content:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+        }
+        
+        .education-item:nth-child(odd) .education-content {
+            text-align: right;
+            border-left: none;
+            border-right: 4px solid var(--accent-red);
+        }
+        
+        .education-content h4 {
+            font-size: 1.3rem;
+            color: var(--primary-black);
+            margin-bottom: 0.5rem;
+        }
+        
+        .education-content .degree {
+            color: var(--accent-red);
+            font-weight: bold;
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .education-content .institution {
+            color: var(--light-gray);
+            font-size: 1rem;
+            margin-bottom: 0.3rem;
+        }
+        
+        .education-content .location {
+            color: var(--light-gray);
+            font-size: 0.95rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .education-content .period {
+            display: inline-block;
+            background: var(--light-bg);
+            padding: 0.3rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            color: var(--text-gray);
+            font-weight: 500;
+        }
+        
+        .timeline-dot {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            width: 20px;
+            height: 20px;
+            background: var(--accent-red);
+            border: 4px solid var(--white);
+            border-radius: 50%;
+            box-shadow: 0 0 0 4px var(--accent-red);
+            z-index: 3;
+        }
+        
         /* Projects Section */
         .projects-grid {
             display: grid;
@@ -764,6 +896,39 @@
             .modal-content {
                 width: 95%;
             }
+            
+            /* Education Timeline Mobile */
+            .education-timeline::before {
+                left: 60px;
+            }
+            
+            .education-item {
+                flex-direction: row !important;
+            }
+            
+            .education-item:nth-child(even) {
+                flex-direction: row !important;
+            }
+            
+            .education-logo {
+                flex: 0 0 120px;
+            }
+            
+            .education-logo img {
+                width: 80px;
+                height: 80px;
+            }
+            
+            .education-content {
+                margin: 0 0 0 1rem;
+                text-align: left !important;
+                border-right: none !important;
+                border-left: 4px solid var(--accent-red) !important;
+            }
+            
+            .timeline-dot {
+                left: 60px;
+            }
         }
     </style>
 </head>
@@ -831,6 +996,58 @@
                     <div class="skill-item">
                         <h4>🎯 Problem Solving</h4>
                         <p>Strong project management and analytical skills</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Education Timeline -->
+        <div class="container education-section">
+            <h2 class="section-title">Academic History</h2>
+            
+            <div class="education-timeline">
+                <!-- Bachelor Degree -->
+                <div class="education-item">
+                    <div class="education-logo">
+                        <img src="images/education/Degree.jpg" alt="UTeM Logo" onerror="this.src='https://via.placeholder.com/120x120/000000/e63946?text=UTeM'">
+                    </div>
+                    <div class="timeline-dot"></div>
+                    <div class="education-content">
+                        <div class="degree">Bachelor Degree</div>
+                        <h4>Software Engineering</h4>
+                        <div class="institution">Universiti Teknikal Malaysia Melaka (UTeM)</div>
+                        <div class="location">📍 Melaka, Malaysia</div>
+                        <div class="period">2023/2024 - Present</div>
+                    </div>
+                </div>
+                
+                <!-- STPM -->
+                <div class="education-item">
+                    <div class="education-logo">
+                        <img src="images/education/STPM.jpg" alt="Sin Min School Logo" onerror="this.src='https://via.placeholder.com/120x120/000000/e63946?text=STPM'">
+                    </div>
+                    <div class="timeline-dot"></div>
+                    <div class="education-content">
+                        <div class="degree">Pre-University (STPM)</div>
+                        <h4>Science Stream</h4>
+                        <div class="institution">SMJK Sin Min</div>
+                        <div class="location">📍 Sungai Petani, Kedah</div>
+                        <div class="period">2021 - 2022/2023</div>
+                    </div>
+                </div>
+                
+                <!-- SPM -->
+                <div class="education-item">
+                    <div class="education-logo">
+                        <img src="images/education/SPM.jpg" alt="SMK Dato' Bijaya Setia Logo" onerror="this.src='https://via.placeholder.com/120x120/000000/e63946?text=SPM'">
+                    </div>
+                    <div class="timeline-dot"></div>
+                    <div class="education-content">
+                        <div class="degree">Secondary School (SPM)</div>
+                        <h4>Science Stream</h4>
+                        <div class="institution">SMK Dato' Bijaya Setia</div>
+                        <div class="location">📍 Sungai Petani, Kedah</div>
+                        <div class="period">2016 - 2021</div>
                     </div>
                 </div>
             </div>
@@ -905,7 +1122,9 @@
                 <div class="contact-info">
                     <div class="contact-item">
                         <h4>Email</h4>
-                        <p><a href="mailto:B032310495@student.utem.edu.my"  style="color: white; text-decoration: none;"> B032310495@student.utem.edu.my</a></p>
+                        <p><a href="/cdn-cgi/l/email-protection#a6e4969594959796929f93e6d5d2d3c2c3c8d288d3d2c3cb88c3c2d388cbdf" style="color: white; text-decoration: none;">
+   <span class="__cf_email__" data-cfemail="91d3a1a2a3a2a0a1a5a8a4d1e2e5e4f5f4ffe5bfe4e5f4fcbff4f5e4bffce8">[email&#160;protected]</span>
+</a></p>
                     </div>
                     <div class="contact-item">
                         <h4>Phone</h4>
