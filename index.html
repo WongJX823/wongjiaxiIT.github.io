@@ -103,6 +103,13 @@
             padding: 0 2rem;
             position: relative;
             z-index: 2;
+            display: flex;
+            align-items: center;
+            gap: 4rem;
+        }
+        
+        .hero-content {
+            flex: 1;
         }
         
         .hero-content h1 {
@@ -121,6 +128,48 @@
             color: var(--light-gray);
             margin-bottom: 2rem;
             max-width: 600px;
+        }
+        
+        .hero-image {
+            flex: 0 0 300px;
+            position: relative;
+        }
+        
+        .hero-image img {
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 8px solid var(--accent-red);
+            box-shadow: 0 10px 40px rgba(230, 57, 70, 0.3);
+            transition: transform 0.3s ease;
+        }
+        
+        .hero-image img:hover {
+            transform: scale(1.05);
+        }
+        
+        .hero-image::before {
+            content: '';
+            position: absolute;
+            width: 320px;
+            height: 320px;
+            border-radius: 50%;
+            border: 3px solid var(--accent-red);
+            top: -10px;
+            left: -10px;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+                opacity: 0.5;
+            }
+            50% {
+                transform: scale(1.05);
+                opacity: 0.8;
+            }
         }
         
         .btn {
@@ -658,6 +707,26 @@
                 gap: 1rem;
             }
             
+            .hero .container {
+                flex-direction: column;
+                gap: 2rem;
+            }
+            
+            .hero-image {
+                flex: 0 0 200px;
+                order: -1;
+            }
+            
+            .hero-image img {
+                width: 200px;
+                height: 200px;
+            }
+            
+            .hero-image::before {
+                width: 220px;
+                height: 220px;
+            }
+            
             .hero-content h1 {
                 font-size: 2.5rem;
             }
@@ -722,6 +791,9 @@
                 <a href="#projects" class="btn">View My Work</a>
                 <a href="#contact" class="btn btn-secondary">Get In Touch</a>
             </div>
+            <div class="hero-image">
+                <img src="images/profile.jpg" alt="Wong Jia Xi" onerror="this.src='https://via.placeholder.com/300x300/000000/e63946?text=WJX'">
+            </div>
         </div>
     </section>
 
@@ -773,7 +845,7 @@
                 <!-- Project 1 -->
                 <div class="project-card" onclick="openModal('project1')">
                     <div class="project-image">
-                        <img src="images/bus-ticketing.jpg" alt="Bus Ticketing System" onerror="this.style.display='none'; this.parentElement.innerHTML='🚌';">
+                        <img src="images/bus-ticketing/view-schedule.png" alt="Bus Ticketing System">
                         <div class="view-gallery-badge">
                             <span>📸</span> View Gallery
                         </div>
@@ -795,7 +867,7 @@
                 <!-- Project 2 -->
                 <div class="project-card" onclick="openModal('project2')">
                     <div class="project-image">
-                        <img src="images/mushroom-identifier.jpg" alt="Mushroom Identifier" onerror="this.style.display='none'; this.parentElement.innerHTML='🍄';">
+                        <img src="images/mushroom-identifier/main-interface.jpg" alt="Mushroom Identifier">
                         <div class="view-gallery-badge">
                             <span>📸</span> View Gallery
                         </div>
@@ -833,7 +905,9 @@
                 <div class="contact-info">
                     <div class="contact-item">
                         <h4>Email</h4>
-                        <p><a href="mailto:B032310495@student.utem.edu.my"  style="color: white; text-decoration: none;"> B032310495@student.utem.edu.my</a></p>
+                        <p><a href="/cdn-cgi/l/email-protection#a6e4969594959796929f93e6d5d2d3c2c3c8d288d3d2c3cb88c3c2d388cbdf" style="color: white; text-decoration: none;">
+   <span class="__cf_email__" data-cfemail="91d3a1a2a3a2a0a1a5a8a4d1e2e5e4f5f4ffe5bfe4e5f4fcbff4f5e4bffce8">[email&#160;protected]</span>
+</a></p>
                     </div>
                     <div class="contact-item">
                         <h4>Phone</h4>
