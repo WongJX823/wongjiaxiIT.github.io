@@ -69,10 +69,39 @@
             color: var(--text-gray);
             font-weight: 500;
             transition: color 0.3s;
+            position: relative;
         }
         
         nav a:hover {
             color: var(--accent-red);
+        }
+        
+        nav a.active {
+            color: var(--accent-red);
+            font-weight: 700;
+        }
+        
+        nav a.active::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: var(--accent-red);
+            border-radius: 3px;
+            animation: slideIn 0.3s ease;
+        }
+        
+        @keyframes slideIn {
+            from {
+                width: 0;
+                left: 50%;
+            }
+            to {
+                width: 100%;
+                left: 0;
+            }
         }
         
         /* Hero Section */
@@ -1124,7 +1153,7 @@
                 <div class="contact-info">
                     <div class="contact-item">
                         <h4>Email</h4>
-                       <p><a href="mailto:B032310495@student.utem.edu.my"  style="color: white; text-decoration: none;"> B032310495@student.utem.edu.my</a></p>
+                        <p><a href="mailto:B032310495@student.utem.edu.my"  style="color: white; text-decoration: none;"> B032310495@student.utem.edu.my</a></p>
                     </div>
                     <div class="contact-item">
                         <h4>Phone</h4>
@@ -1420,6 +1449,56 @@
                 if (e.key === 'ArrowRight') changeImage(1);
                 if (e.key === 'Escape') closeImageViewer();
             }
+        });
+        
+        // Active Navigation Highlighting
+        const sections = document.querySelectorAll('section[id]');
+        const navLinks = document.querySelectorAll('nav a[href^="#"]');
+        
+        function setActiveLink() {
+            let current = '';
+            const scrollPosition = window.scrollY + 100;
+            
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.offsetHeight;
+                
+                if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
+                    current = section.getAttribute('id');
+                }
+            });
+            
+            // Check if education section is in view
+            const educationSection = document.getElementById('education');
+            if (educationSection) {
+                const eduTop = educationSection.offsetTop;
+                const eduHeight = educationSection.offsetHeight;
+                
+                if (scrollPosition >= eduTop && scrollPosition < eduTop + eduHeight) {
+                    current = 'education';
+                }
+            }
+            
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                const href = link.getAttribute('href');
+                if (href === '#' + current) {
+                    link.classList.add('active');
+                }
+            });
+        }
+        
+        // Run on scroll
+        window.addEventListener('scroll', setActiveLink);
+        
+        // Run on page load
+        window.addEventListener('load', setActiveLink);
+        
+        // Run after smooth scroll
+        navLinks.forEach(link => {
+            link.addEventListener('click', function() {
+                setTimeout(setActiveLink, 100);
+            });
         });
     </script>
 </body>
